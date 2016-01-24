@@ -5,8 +5,8 @@ public class camera extends Vector {
 	public Position target = new Position(0,0,-100);
 	public double fovy = 60;
 	public double aspect = 3/4;
-	public double near = 0.001;
-	public double far = 100;
+	public double near = 1;
+	public double far = 20;
 	
 	public camera(Position p) {
 		super(p);
@@ -16,7 +16,4 @@ public class camera extends Vector {
 		super(x, y, z);
 	}
 
-	public void setFovy(double fovy) {
-		this.fovy = fovy;
-	}
 }
