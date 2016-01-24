@@ -4,20 +4,7 @@ public class Position extends Point {
 	// variables
 	public double x, y, z;
 
-	//getter
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public double getZ() {
-		return z;
-	}
-
-	//constructor / setters
+	//constructors
 	public Position() {
 		this(0, 0, 0);
 	}
@@ -33,6 +20,7 @@ public class Position extends Point {
 		this.z = z;		
 	}
 	
+	// methods
 	public void moveTo(double x, double y, double z){
 		this.x = x;
 		this.y = y;
