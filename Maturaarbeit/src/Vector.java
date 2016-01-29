@@ -1,4 +1,5 @@
 
+@SuppressWarnings("serial")
 public class Vector extends Position {
 
 	public double length;
@@ -7,7 +8,7 @@ public class Vector extends Position {
 		super(p);
 		length = getLength(this);
 	}
-
+	
 	public Vector(double x, double y, double z) {
 		super(x, y, z);
 		length = getLength(this);
@@ -25,11 +26,8 @@ public class Vector extends Position {
 	
 	public double angleTo(Vector v) {
 		double skal = this.x*v.x + this.y*v.y + this.z*v.z;
-		if(skal == 0) {
-			return 90;
-		} else {
-			return(Math.acos(skal/(this.length * v.length)));
-		}
+		return Math.acos(skal/(this.length * v.length));
+	
 	} // end of angleTo
 	
 	public Vector crossProduct(Vector v) {

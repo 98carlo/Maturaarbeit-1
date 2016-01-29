@@ -23,6 +23,7 @@ import java.nio.IntBuffer;
 import com.jogamp.opengl.util.FPSAnimator;
 
 
+@SuppressWarnings("serial")
 public class Main extends JFrame
     implements GLEventListener, KeyListener, MouseListener
 {

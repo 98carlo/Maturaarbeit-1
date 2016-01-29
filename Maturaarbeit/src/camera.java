@@ -1,4 +1,5 @@
 
+@SuppressWarnings("serial")
 public class camera extends Vector {
 
 	public Vector normal = new Vector(0,1,0);

@@ -1,5 +1,6 @@
 import java.awt.Point;
 
+@SuppressWarnings("serial")
 public class Position extends Point {
 	// variables
 	public double x, y, z;
