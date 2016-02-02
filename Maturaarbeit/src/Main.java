@@ -25,13 +25,13 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame
-    implements GLEventListener, KeyListener, MouseListener
+    implements GLEventListener//, KeyListener, MouseListener
 {
  
 	private GLU glu;
 	private GLCapabilities caps;
 	private static GLCanvas canvas; 
-	private camera camera = new camera(0,-2,-10);
+	public static camera camera;
 	
 	private Boolean drawBottom = true;
 
@@ -39,13 +39,14 @@ public class Main extends JFrame
 	public Main()
 	{
 		super("Main");
-		//
+		
 		caps = new GLCapabilities(GLProfile.getDefault());
 		canvas = new GLCanvas(caps);
+		camera = new camera(0,-2,-10);
 		canvas.addGLEventListener(this);
-		canvas.addKeyListener(this);
-		canvas.addMouseListener(this);
-		//
+		canvas.addKeyListener(new KeyAdapter());
+		canvas.addMouseListener(new MouseAdapter());
+		
 		getContentPane().add(canvas, BorderLayout.CENTER);
 	} // end of constructor
  
@@ -68,6 +69,7 @@ public class Main extends JFrame
  
 // ------------------ OpenGL Part  ------------------ //
   
+	@Override
 	public void init(GLAutoDrawable drawable)
 	{
 		GL2 gl = drawable.getGL().getGL2();  
@@ -79,6 +81,7 @@ public class Main extends JFrame
 		setupPointers(gl);
 	} // end of init
  
+	@Override
 	public void display(GLAutoDrawable drawable)
 	{
 		GL2 gl = drawable.getGL().getGL2();
@@ -171,74 +174,4 @@ public class Main extends JFrame
  
 	} // end of setupPointers
   
-//------------------ Event Part  ------------------ //
-  
-	public void keyTyped(KeyEvent key)
-	{ 
-	
-	}
- 
-	public void keyPressed(KeyEvent key)
-	{
-		switch (key.getKeyChar()) 
-		{
-		case 'w':
-			camera.translate(0, 0, .1);
-			break;
-		case 's':
-			camera.translate(0, 0, -.1);
-			break;
-		case 'a':
-			camera.translate(.1, 0, 0);
-			break;
-		case 'd':
-			camera.translate(-.1, 0, 0);
-			break;
-		case 'e':
-			camera.translate(0, .1, 0);
-			break;
-		case 'q':
-			camera.translate(0, -.1, 0);
-			break;
-		case KeyEvent.VK_SPACE:
-			System.out.println(camera.x + " " + camera.y + " " + camera.z);
-			break;
-		case KeyEvent.VK_ESCAPE:
-			System.exit(0);
-			break;
- 
-		default:
-			break;
-		} // end of switch
-	} // end of keyPressed
- 
-	public void keyReleased(KeyEvent key)
-	{ 
-  
-	}
- 
-	public void mouseClicked(MouseEvent mouse)
-	{  
-  
-	}
- 
-	public void mousePressed(MouseEvent mouse)
-	{
-	
-	}
- 
-	public void mouseReleased(MouseEvent mouse)
-	{
-  
-	}
-	
-	public void mouseEntered(MouseEvent mouse)
-	{
-
-	}
- 
-	public void mouseExited(MouseEvent mouse)
-	{
-
-	}
 }
