@@ -1,6 +1,7 @@
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GL2GL3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
@@ -13,10 +14,6 @@ import com.jogamp.opengl.glu.GLU;
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -25,15 +22,16 @@ import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame
-    implements GLEventListener//, KeyListener, MouseListener
+    implements GLEventListener
 {
  
 	private GLU glu;
 	private GLCapabilities caps;
 	private static GLCanvas canvas; 
 	public static camera camera;
+	public static boolean polygonMode = false;
 	
-	private Boolean drawBottom = true;
+	private Boolean drawBottom = false;
 
 	//constructor
 	public Main()
@@ -96,6 +94,12 @@ public class Main extends JFrame
         //Modeling
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
+		
+		if(polygonMode){
+			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);			
+		} else {
+			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_FILL);
+		}
 		
 		if(drawBottom){
 			gl.glBegin(GL.GL_TRIANGLE_STRIP);
