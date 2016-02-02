@@ -32,6 +32,11 @@ public class KeyAdapter implements KeyListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			System.out.println(Main.camera.x + " " + Main.camera.y + " " + Main.camera.z);
+			if (Main.polygonMode){
+				Main.polygonMode = false;
+			} else {
+				Main.polygonMode = true;
+			};
 			break;
 		case KeyEvent.VK_ESCAPE:
 			System.exit(0);
