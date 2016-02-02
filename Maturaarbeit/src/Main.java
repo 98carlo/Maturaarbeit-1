@@ -63,6 +63,12 @@ public class Main extends JFrame
 		new Main().run();
 		final FPSAnimator animator = new FPSAnimator(canvas, 60,true); 
 	    animator.start(); 
+	    
+	    /*try {
+			new DataSwisstopo200m();
+		} catch (Exception e) {
+			System.err.println("Something wrong with data");
+		}*/
 	} // end of main
  
 // ------------------ OpenGL Part  ------------------ //
@@ -162,7 +168,7 @@ public class Main extends JFrame
 		for (int j = 0; j < colors.length; j++)
 			tmpColorsBuf.put(colors[j]);
 		/*for (int k = 0; k < normals.length; k++)
-			tmpNormalsBuf.put(normals[k]);*/
+			tmpNormalsBuf.put(normals[k]);  */
 		tmpVerticesBuf.rewind();
 		tmpColorsBuf.rewind();
 		//tmpNormalsBuf.rewind();
