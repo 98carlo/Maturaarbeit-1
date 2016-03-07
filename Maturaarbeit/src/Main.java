@@ -11,9 +11,11 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.fixedfunc.GLPointerFunc;
 import com.jogamp.opengl.glu.GLU;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -28,10 +30,13 @@ public class Main extends JFrame
 	private GLU glu;
 	private GLCapabilities caps;
 	private static GLCanvas canvas; 
+	
 	public static Settings settings = new Settings("Settings");
 	
 	public static camera camera;
 	public static boolean polygonMode = false;
+	
+	private static boolean haveData = false;
 	
 
 	//constructor
@@ -65,11 +70,33 @@ public class Main extends JFrame
 		final FPSAnimator animator = new FPSAnimator(canvas, 60,true); 
 	    animator.start(); 
 	    
-	    try {
-			new DataSwisstopo200m();
-		} catch (Exception e) {
-			System.err.println("Something wrong with data");
-		}
+	    
+	    if(!haveData) {
+	    	JFileChooser datafetcher = new JFileChooser();
+      
+            	if(datafetcher.showOpenDialog(canvas) == JFileChooser.APPROVE_OPTION)
+            	{
+            		File fetcheddata = datafetcher.getSelectedFile().getAbsoluteFile();
+            		
+            		try
+            		{
+            			System.out.println(fetcheddata);
+            			
+            			Data data = new Data(fetcheddata);
+            			Main.haveData = true;
+            			
+                        Thread.sleep(10);
+            		}
+            		
+            		catch (Exception e)
+            		{
+                    System.out.println(e);
+            		}
+              
+            	}
+	    };
+	    
+	    
 	} // end of main
  
 // ------------------ OpenGL Part  ------------------ //
