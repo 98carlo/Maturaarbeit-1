@@ -28,10 +28,11 @@ public class Main extends JFrame
 	private GLU glu;
 	private GLCapabilities caps;
 	private static GLCanvas canvas; 
+	public static Settings settings = new Settings("Settings");
+	
 	public static camera camera;
 	public static boolean polygonMode = false;
 	
-	private Boolean drawBottom = false;
 
 	//constructor
 	public Main()
@@ -64,11 +65,11 @@ public class Main extends JFrame
 		final FPSAnimator animator = new FPSAnimator(canvas, 60,true); 
 	    animator.start(); 
 	    
-	    /*try {
+	    try {
 			new DataSwisstopo200m();
 		} catch (Exception e) {
 			System.err.println("Something wrong with data");
-		}*/
+		}
 	} // end of main
  
 // ------------------ OpenGL Part  ------------------ //
@@ -79,6 +80,7 @@ public class Main extends JFrame
 		GL2 gl = drawable.getGL().getGL2();  
 		glu = new GLU();
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		
 		// enables depth_test (which vertex is behind the other...)
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		
@@ -107,15 +109,7 @@ public class Main extends JFrame
 			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_FILL);
 		}
 		
-		if(drawBottom){
-			gl.glBegin(GL.GL_TRIANGLE_STRIP);
-			gl.glColor3d(.3, .3, .3);
-			gl.glVertex3d(100,0,-100);
-			gl.glVertex3d(-100, 0, -100);
-			gl.glVertex3d(100, 0, 100);
-			gl.glVertex3d(-100, 0, 100);
-			gl.glEnd();
-		}
+		
 		int indices[] = new int[] { 0, 2, 1,   1, 3, 2,   3, 4, 2,   0, 4, 2 };
 		IntBuffer indicesBuf = Buffers.newDirectIntBuffer(indices.length);
 			

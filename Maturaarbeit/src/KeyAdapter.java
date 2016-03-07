@@ -1,6 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 public class KeyAdapter implements KeyListener {
 
 	public KeyAdapter() {
@@ -31,7 +32,7 @@ public class KeyAdapter implements KeyListener {
 			Main.camera.translate(0, -.1, 0);
 			break;
 		case KeyEvent.VK_SPACE:
-			System.out.println(Main.camera.x + " " + Main.camera.y + " " + Main.camera.z);
+			//System.out.println(Main.camera.x + " " + Main.camera.y + " " + Main.camera.z);
 			if (Main.polygonMode){
 				Main.polygonMode = false;
 			} else {
@@ -39,7 +40,9 @@ public class KeyAdapter implements KeyListener {
 			};
 			break;
 		case KeyEvent.VK_ESCAPE:
-			System.exit(0);
+		
+			Main.settings.setVisible(true);
+			
 			break;
  
 		default:
