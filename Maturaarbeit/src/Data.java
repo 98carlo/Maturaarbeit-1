@@ -14,17 +14,18 @@ public class Data {
 	public Data(File fetcheddata) {
 	
 		
-		String data =  null; //fetcheddata;
-
+		String data = fetcheddata.getAbsolutePath();
 		try{
 		    InputStream fis= new FileInputStream(data);
 		    BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 		    
 		    for (String line = br.readLine(); line != null; line = br.readLine()) {
 		    	dataList.add(line);
+		    	
 		    }
 		    
 		    br.close();
+		    
 		}
 		catch(Exception e){
 		    System.err.println("Error: Target File Cannot Be Read");
