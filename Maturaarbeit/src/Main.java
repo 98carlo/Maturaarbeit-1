@@ -1,24 +1,34 @@
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
+
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2GL3;
 import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.fixedfunc.GLPointerFunc;
 import com.jogamp.opengl.glu.GLU;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.io.File;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import com.jogamp.opengl.util.FPSAnimator;
 
 
@@ -31,71 +41,141 @@ public class Main extends JFrame
 	private GLCapabilities caps;
 	private static GLCanvas canvas; 
 	
-	public static Settings settings = new Settings("Settings");
 	
 	public static camera camera;
 	public static boolean polygonMode = false;
 	
 	private static boolean haveData = false;
+	public static boolean showSettings;
+	
+	
+	private JButton btnDraw;
+	private JButton btnNewData;
+	
+	public static JPanel panContainer = new JPanel();
+	private JPanel panDraw = new JPanel();
+	private JPanel panSettings = new JPanel();
+	public static CardLayout cl = new CardLayout();
 	
 
 	//constructor
 	public Main()
 	{
 		super("Main");
+			
+		panContainer.setLayout(cl);
+	
 		
+		
+		// Settings Window
+		panSettings.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblTitel = new JLabel("TITEL");
+		lblTitel.setHorizontalAlignment(SwingConstants.CENTER);
+		panSettings.add(lblTitel, BorderLayout.NORTH);
+		
+		btnDraw = new JButton("draw");
+		btnDraw.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cl.show(panContainer, "2");
+			};
+		});
+			
+		panSettings.add(btnDraw, BorderLayout.SOUTH);
+		
+		JPanel panel = new JPanel();
+		panSettings.add(panel, BorderLayout.CENTER);
+		panel.setLayout(new GridLayout(4, 2));
+		
+		JLabel lblCurrentData = new JLabel("current Data: ");
+		panel.add(lblCurrentData);
+		
+		btnNewData = new JButton("new Data");
+		btnNewData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser datafetcher = new JFileChooser(); 
+				
+				if(datafetcher.showOpenDialog(canvas) == JFileChooser.APPROVE_OPTION){
+				    	
+			            File fetcheddata = datafetcher.getSelectedFile().getAbsoluteFile();
+			            		
+			            try{
+			            	System.out.println(fetcheddata);
+			            		
+			            	Data data = new Data(fetcheddata);
+			            	haveData = true;
+			            	Thread.sleep(10);
+			            }
+			            catch (Exception e){
+			                System.out.println(e);
+			           	}
+			              
+				    }
+			};
+		});
+		panel.add(btnNewData);
+		
+		JLabel lblTopLeftCorner = new JLabel("top left corner: ");
+		panel.add(lblTopLeftCorner);
+		
+		JTextArea txtTopLeftCorner = new JTextArea();
+		txtTopLeftCorner.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+		panel.add(txtTopLeftCorner);
+		
+		JLabel lblWidth = new JLabel("width: ");
+		panel.add(lblWidth);
+		
+		JTextArea txtWidth = new JTextArea();
+		txtWidth.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+		panel.add(txtWidth);
+		
+		JLabel lblHeight = new JLabel("height: ");
+		panel.add(lblHeight);
+		
+		JTextArea txtHeight = new JTextArea();
+		txtHeight.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+		panel.add(txtHeight);
+		
+		
+		// drawWindow
 		caps = new GLCapabilities(GLProfile.getDefault());
 		canvas = new GLCanvas(caps);
 		camera = new camera(0,-2,-10);
 		canvas.addGLEventListener(this);
 		canvas.addKeyListener(new KeyAdapter());
 		canvas.addMouseListener(new MouseAdapter());
-		
-		getContentPane().add(canvas, BorderLayout.CENTER);
-	} // end of constructor
- 
-	public void run()
-	{
-		setSize(640, 480);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+		//this.getContentPane().add(canvas, BorderLayout.CENTER);
+		panDraw.add(canvas, BorderLayout.CENTER);
 		canvas.requestFocusInWindow();
+		panDraw.setBackground(Color.BLUE);
 		
-	} // end of run
+		
+		
+		panContainer.add(panSettings, "1");
+		panContainer.add(panDraw, "2");
+		
+		cl.show(panContainer, "1");
+		
+		this.add(panContainer);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		this.setSize(640, 480);
+		this.setLocationRelativeTo(null);
+		
+		this.setVisible(true);
+		
+	} // end of constructor
 	
+	
+
 	public static void main(String[] args)
 	{
-		new Main().run();
+		new Main();
 		final FPSAnimator animator = new FPSAnimator(canvas, 60,true); 
-	    animator.start(); 
-	    
-	    
-	    if(!haveData) {
-	    	JFileChooser datafetcher = new JFileChooser();
-      
-            	if(datafetcher.showOpenDialog(canvas) == JFileChooser.APPROVE_OPTION)
-            	{
-            		File fetcheddata = datafetcher.getSelectedFile().getAbsoluteFile();
-            		
-            		try
-            		{
-            			System.out.println(fetcheddata);
-            			
-            			Data data = new Data(fetcheddata);
-            			Main.haveData = true;
-            			
-                        Thread.sleep(10);
-            		}
-            		
-            		catch (Exception e)
-            		{
-                    System.out.println(e);
-            		}
-              
-            	}
-	    };
-	    
+	    animator.start();   
 	    
 	} // end of main
  
@@ -117,6 +197,7 @@ public class Main extends JFrame
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
+		System.out.println("display");
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
@@ -203,6 +284,5 @@ public class Main extends JFrame
 		gl.glColorPointer(3, GL.GL_FLOAT, 0, tmpColorsBuf);
 		//gl.glNormalPointer(GL2ES2.GL_INT, 0, tmpNormalsBuf);
  
-	} // end of setupPointers
-  
+	} // end of setupPointers	
 }
