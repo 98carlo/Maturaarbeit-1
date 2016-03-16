@@ -40,11 +40,9 @@ public class KeyAdapter implements KeyListener {
 			};
 			break;
 		case KeyEvent.VK_ESCAPE:
-		
-			Main.settings.setVisible(true);
-			
+			Main.cl.show(Main.panContainer, "1");
 			break;
- 
+			
 		default:
 			break;
 		} // end of switch
