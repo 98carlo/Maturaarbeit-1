@@ -5,7 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
 import javax.swing.JButton;
@@ -46,6 +46,8 @@ public class Main extends JFrame
 	public static boolean polygonMode = false;
 	
 	private static boolean haveData = false;
+	private static Data currentdata = null;
+	
 	public static boolean showSettings;
 	
 	
@@ -53,7 +55,7 @@ public class Main extends JFrame
 	private JButton btnNewData;
 	
 	public static JPanel panContainer = new JPanel();
-	private JPanel panDraw = new JPanel();
+	private static JPanel panDraw = new JPanel();
 	private JPanel panSettings = new JPanel();
 	public static CardLayout cl = new CardLayout();
 	
@@ -64,8 +66,6 @@ public class Main extends JFrame
 		super("Main");
 			
 		panContainer.setLayout(cl);
-	
-		
 		
 		// Settings Window
 		panSettings.setLayout(new BorderLayout(0, 0));
@@ -88,7 +88,7 @@ public class Main extends JFrame
 		panSettings.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(4, 2));
 		
-		JLabel lblCurrentData = new JLabel("current Data: ");
+		JLabel lblCurrentData = new JLabel("current Data:	" + currentdata);
 		panel.add(lblCurrentData);
 		
 		btnNewData = new JButton("new Data");
@@ -105,14 +105,13 @@ public class Main extends JFrame
 			            try{
 			            	System.out.println(fetcheddata);
 			            		
-			            	Data data = new Data(fetcheddata);
+			            	currentdata = new Data(fetcheddata);
 			            	haveData = true;
 			            	Thread.sleep(10);
 			            }
 			            catch (Exception e){
 			                System.out.println(e);
-			           	}
-			              
+			           	}     
 				    }
 			};
 		});
@@ -145,13 +144,10 @@ public class Main extends JFrame
 		canvas = new GLCanvas(caps);
 		camera = new camera(0,-2,-10);
 		canvas.addGLEventListener(this);
-		canvas.addKeyListener(new KeyAdapter());
+		this.addKeyListener(new KeyAdapter());
 		canvas.addMouseListener(new MouseAdapter());
-		//this.getContentPane().add(canvas, BorderLayout.CENTER);
 		panDraw.add(canvas, BorderLayout.CENTER);
-		canvas.requestFocusInWindow();
-		panDraw.setBackground(Color.BLUE);
-		
+		canvas.requestFocusInWindow();		
 		
 		
 		panContainer.add(panSettings, "1");
@@ -248,41 +244,35 @@ public class Main extends JFrame
  
 	private void setupPointers(GL2 gl)
 	{
-		float vertices[] = new float[]	
-				{  		3, -1, 3,   	-3, 0, 3,   	0, 1.5f, 0, 
-						-3, 2.5f, -3, 	 3, 1.5f, -3,
+		double vertices[] = new double[]	
+				{  		3, -1, 3,   	-3, 0, 3,   	0, 1.5, 0, 
+						-3, 2.5, -3, 	 3, 1.5, -3,
 				};
-		float colors[] = new float[]
+		double colors[] = new double[]
 				{  		1, 0, 0, 	1, 2, 0, 	0, 1, 0, 
 						1, 0, 0, 	1, 0, 0, 	
 				};
-		/*int normals[] = new int[]
-				{ 		1, 0, 0, 	1, 0, 0, 	1, 0, 0, 
-						1, 0, 0, 	1, 0, 0, 	1, 0, 0,
-						1, 0, 0, 	1, 0, 0, 	1, 0, 0,
-						1, 0, 0, 	1, 0, 0, 	1, 0, 0,
-				};*/
-		FloatBuffer tmpVerticesBuf = Buffers.newDirectFloatBuffer(vertices.length);
-		FloatBuffer tmpColorsBuf = Buffers.newDirectFloatBuffer(colors.length);
-		//IntBuffer tmpNormalsBuf = Buffers.newDirectIntBuffer(normals.length);
-		for (int i = 0; i < vertices.length; i++)
+		
+		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
+		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);
+		
+		for (int i = 0; i < vertices.length; i++) {
 			tmpVerticesBuf.put(vertices[i]);
-		for (int j = 0; j < colors.length; j++)
+		}
+		
+		for (int j = 0; j < colors.length; j++) {
 			tmpColorsBuf.put(colors[j]);
-		/*for (int k = 0; k < normals.length; k++)
-			tmpNormalsBuf.put(normals[k]);  */
+		}
+			
 		tmpVerticesBuf.rewind();
 		tmpColorsBuf.rewind();
-		//tmpNormalsBuf.rewind();
 		
-		//
+		
 		gl.glEnableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GLPointerFunc.GL_COLOR_ARRAY);
-		//gl.glEnableClientState(GLPointerFunc.GL_NORMAL_ARRAY);
-		//
+		
 		gl.glVertexPointer(3, GL.GL_FLOAT, 0, tmpVerticesBuf);
 		gl.glColorPointer(3, GL.GL_FLOAT, 0, tmpColorsBuf);
-		//gl.glNormalPointer(GL2ES2.GL_INT, 0, tmpNormalsBuf);
- 
+		
 	} // end of setupPointers	
 }
