@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +54,6 @@ public class Main extends JFrame
 	private JButton btnNewData;
 	
 	public static JPanel panContainer = new JPanel();
-	private static JPanel panDraw = new JPanel();
 	private JPanel panSettings = new JPanel();
 	public static CardLayout cl = new CardLayout();
 	
@@ -144,14 +142,12 @@ public class Main extends JFrame
 		canvas = new GLCanvas(caps);
 		camera = new camera(0,-2,-10);
 		canvas.addGLEventListener(this);
-		this.addKeyListener(new KeyAdapter());
+		canvas.addKeyListener(new KeyAdapter());
 		canvas.addMouseListener(new MouseAdapter());
-		panDraw.add(canvas, BorderLayout.CENTER);
-		canvas.requestFocusInWindow();		
 		
 		
 		panContainer.add(panSettings, "1");
-		panContainer.add(panDraw, "2");
+		panContainer.add(canvas, "2");
 		
 		cl.show(panContainer, "1");
 		
@@ -193,7 +189,6 @@ public class Main extends JFrame
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-		System.out.println("display");
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
