@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +13,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
@@ -45,13 +49,14 @@ public class Main extends JFrame
 	public static boolean polygonMode = false;
 	
 	private static boolean haveData = false;
-	private static Data currentdata = null;
+	private static Data currentdata = new Data();
 	
 	public static boolean showSettings;
 	
 	
 	private JButton btnDraw;
 	private JButton btnNewData;
+	
 	
 	public static JPanel panContainer = new JPanel();
 	private JPanel panSettings = new JPanel();
@@ -76,6 +81,7 @@ public class Main extends JFrame
 		btnDraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+	
 				cl.show(panContainer, "2");
 			};
 		});
@@ -86,7 +92,7 @@ public class Main extends JFrame
 		panSettings.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(4, 2));
 		
-		JLabel lblCurrentData = new JLabel("current Data:	" + currentdata);
+		JLabel lblCurrentData = new JLabel("current Data: no Data");
 		panel.add(lblCurrentData);
 		
 		btnNewData = new JButton("new Data");
@@ -105,6 +111,10 @@ public class Main extends JFrame
 			            		
 			            	currentdata = new Data(fetcheddata);
 			            	haveData = true;
+			            	lblCurrentData.setText("current Data: " + currentdata.getName());
+			            	
+			            	
+			            	
 			            	Thread.sleep(10);
 			            }
 			            catch (Exception e){
@@ -122,19 +132,12 @@ public class Main extends JFrame
 		txtTopLeftCorner.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		panel.add(txtTopLeftCorner);
 		
-		JLabel lblWidth = new JLabel("width: ");
-		panel.add(lblWidth);
+		JLabel lblBotRightCorner = new JLabel("bottom right corner: ");
+		panel.add(lblBotRightCorner);
 		
-		JTextArea txtWidth = new JTextArea();
-		txtWidth.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		panel.add(txtWidth);
-		
-		JLabel lblHeight = new JLabel("height: ");
-		panel.add(lblHeight);
-		
-		JTextArea txtHeight = new JTextArea();
-		txtHeight.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		panel.add(txtHeight);
+		JTextArea txtBotRightCorner = new JTextArea();
+		txtBotRightCorner.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+		panel.add(txtBotRightCorner);
 		
 		
 		// drawWindow
