@@ -11,20 +11,25 @@ import java.util.List;
 public class Data {
 
 	private List<String> dataList = new ArrayList<String>();
-	private String dataString = "";
-	private double[] dataXYZ;
-	private double[] dataX;
-	private double[] dataY;
+	private String dataString = null;
+	private double[] dataXYZ = null;
+	private double[] dataX = null;
+	private double[] dataY = null;
 	
-	private String Name = "";
-	private String Path;
+	private String Name = null;
+	private String Path = null;
+	
+	//empty constructor
+	public Data(){
+	
+	};
 	
 	//constructor
 	public Data(File fetcheddata) {
 	
 		
-		this.Path = fetcheddata.getAbsolutePath();
-		this.Name = fetcheddata.getName();
+		Path = fetcheddata.getAbsolutePath();
+		Name = fetcheddata.getName();
 		
 		try{
 		    InputStream fis= new FileInputStream(this.Path);
@@ -81,9 +86,6 @@ public class Data {
 		    Arrays.sort(dataX);
 		    Arrays.sort(dataY);
 		    
-		    System.out.println(dataX[0]);
-		    System.out.println(dataX[dataX.length-1]);
-		    
 		    
 		}
 		catch(Exception e){
@@ -98,22 +100,35 @@ public class Data {
 	}
 
 	public double randomX() {
-		return dataX[(int)Math.floor(Math.random()*dataX.length)];
+		return dataX[(int)Math.floor(Math.random()* dataX.length)];
+	}
+	
+	public Number randomY() {
+		return dataY[(int)Math.floor(Math.random()*dataY.length)];
 	}
 
+	public double getMaxX() {
+		return dataX[dataX.length-1];
+	}
+	
+	public double getMaxY() {
+		return dataY[dataY.length-1];
+	}
+	
 	public double getMinX() {
 		return dataX[0];
 	}
 
-	public double getMaxX() {
-		// TODO Auto-generated method stub
-		return 1;
+	public double getMinY() {
+		return dataY[0];
 	}
 
-	public double getStep() {
-		// TODO Auto-generated method stub
-		return 1;
+	public double getStepX() {
+		return (dataX[1]-dataX[0]);
 	}
 
-	
+	public double getStepY() {
+		return (dataY[1]-dataY[0]);
+	}
+
 }
