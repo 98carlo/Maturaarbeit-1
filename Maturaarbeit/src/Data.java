@@ -122,13 +122,4 @@ public class Data {
 	public double getMinY() {
 		return dataY[0];
 	}
-
-	public double getStepX() {
-		return (dataX[1]-dataX[0]);
-	}
-
-	public double getStepY() {
-		return (dataY[1]-dataY[0]);
-	}
-
 }
