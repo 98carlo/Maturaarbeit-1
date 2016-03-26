@@ -56,7 +56,13 @@ public class Main extends JFrame
 	
 	private JButton btnDraw;
 	private JButton btnNewData;
-	
+	private JPanel panTopLeft = new JPanel();
+	private JPanel panBotRight = new JPanel();
+
+	private JSpinner spinnerTopLeftX;
+	private JSpinner spinnnerTopLeftY;
+	private JSpinner spinnerBotRightX;
+	private JSpinner spinnerBotRightY;
 	
 	public static JPanel panContainer = new JPanel();
 	private JPanel panSettings = new JPanel();
@@ -73,7 +79,7 @@ public class Main extends JFrame
 		// Settings Window
 		panSettings.setLayout(new BorderLayout(0, 0));
 		
-		JLabel lblTitel = new JLabel("TITEL");
+		JLabel lblTitel = new JLabel("Shadowcalculations");
 		lblTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		panSettings.add(lblTitel, BorderLayout.NORTH);
 		
@@ -82,6 +88,11 @@ public class Main extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 	
+				spinnerTopLeftX.getValue();
+				spinnnerTopLeftY.getValue();
+				spinnerBotRightX.getValue();
+				spinnerBotRightY.getValue();
+				
 				cl.show(panContainer, "2");
 			};
 		});
@@ -112,8 +123,35 @@ public class Main extends JFrame
 			            	currentdata = new Data(fetcheddata);
 			            	haveData = true;
 			            	lblCurrentData.setText("current Data: " + currentdata.getName());
+			           
+			            	SpinnerModel topleftX = new SpinnerNumberModel(
+			            			currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
+			            			); 
+			            	SpinnerModel topleftY = new SpinnerNumberModel(
+			            			currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+			            			);
+			            	
+			            	SpinnerModel botrightX = new SpinnerNumberModel(
+			            			currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(), 200
+			            			); 
+			            	SpinnerModel botrightY = new SpinnerNumberModel(
+			            			currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+			            			);
 			            	
 			            	
+			            	spinnerTopLeftX = new JSpinner(topleftX);
+			            	spinnnerTopLeftY = new JSpinner(topleftY);
+			            	panTopLeft.removeAll();
+			            	panTopLeft.add(spinnerTopLeftX);
+			            	panTopLeft.add(spinnnerTopLeftY);
+			            	panTopLeft.repaint();
+			            	
+			            	spinnerBotRightX = new JSpinner(botrightX);
+			            	spinnerBotRightY = new JSpinner(botrightY);
+			            	panBotRight.removeAll();
+			            	panBotRight.add(spinnerBotRightX);
+			            	panBotRight.add(spinnerBotRightY);
+			            	panBotRight.repaint();
 			            	
 			            	Thread.sleep(10);
 			            }
@@ -125,19 +163,25 @@ public class Main extends JFrame
 		});
 		panel.add(btnNewData);
 		
+		
+		// label TopLeft Corner
 		JLabel lblTopLeftCorner = new JLabel("top left corner: ");
 		panel.add(lblTopLeftCorner);
 		
-		JTextArea txtTopLeftCorner = new JTextArea();
-		txtTopLeftCorner.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		panel.add(txtTopLeftCorner);
+		//input TopLeft
+		JLabel lblnoDataTopLeft = new JLabel("no data");
+		panTopLeft.add(lblnoDataTopLeft);
+		panel.add(panTopLeft);
 		
+		
+		// label BotRight Corner
 		JLabel lblBotRightCorner = new JLabel("bottom right corner: ");
 		panel.add(lblBotRightCorner);
 		
-		JTextArea txtBotRightCorner = new JTextArea();
-		txtBotRightCorner.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-		panel.add(txtBotRightCorner);
+		//input BotRight
+		JLabel lblnoDataBotRight = new JLabel("no data");
+		panBotRight.add(lblnoDataBotRight);
+		panel.add(panBotRight);
 		
 		
 		// drawWindow
