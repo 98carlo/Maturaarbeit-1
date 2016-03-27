@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,11 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
@@ -50,8 +47,6 @@ public class Main extends JFrame
 	
 	private static boolean haveData = false;
 	private static Data currentdata = new Data();
-	
-	public static boolean showSettings;
 	
 	
 	private JButton btnDraw;
@@ -86,12 +81,14 @@ public class Main extends JFrame
 		btnDraw = new JButton("draw");
 		btnDraw.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {		// action performed when you hit draw:
 	
-				spinnerTopLeftX.getValue();
-				spinnnerTopLeftY.getValue();
-				spinnerBotRightX.getValue();
-				spinnerBotRightY.getValue();
+				if(haveData){
+					spinnerTopLeftX.getValue();
+					spinnnerTopLeftY.getValue();
+					spinnerBotRightX.getValue();
+					spinnerBotRightY.getValue();
+				}
 				
 				cl.show(panContainer, "2");
 			};
@@ -109,56 +106,59 @@ public class Main extends JFrame
 		btnNewData = new JButton("new Data");
 		btnNewData.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {		//action performed when you hit new data:
 				
+				// sets up a window for choosing the file
 				JFileChooser datafetcher = new JFileChooser(); 
 				
+				//checks if it's a valid file 
 				if(datafetcher.showOpenDialog(canvas) == JFileChooser.APPROVE_OPTION){
 				    	
-			            File fetcheddata = datafetcher.getSelectedFile().getAbsoluteFile();
+					// saves the file path
+					File fetcheddata = datafetcher.getSelectedFile().getAbsoluteFile();
 			            		
-			            try{
-			            	System.out.println(fetcheddata);
-			            		
-			            	currentdata = new Data(fetcheddata);
-			            	haveData = true;
-			            	lblCurrentData.setText("current Data: " + currentdata.getName());
+					try{		
+						currentdata = new Data(fetcheddata);
+						haveData = true;
+						
+						//creates the spinner and which the current data ist
+						lblCurrentData.setText("current Data: " + currentdata.getName());
 			           
-			            	SpinnerModel topleftX = new SpinnerNumberModel(
-			            			currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
-			            			); 
-			            	SpinnerModel topleftY = new SpinnerNumberModel(
-			            			currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
-			            			);
+						SpinnerModel topleftX = new SpinnerNumberModel(
+								currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
+								); 
+						SpinnerModel topleftY = new SpinnerNumberModel(
+								currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								);
 			            	
-			            	SpinnerModel botrightX = new SpinnerNumberModel(
-			            			currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(), 200
-			            			); 
-			            	SpinnerModel botrightY = new SpinnerNumberModel(
-			            			currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
-			            			);
+						SpinnerModel botrightX = new SpinnerNumberModel(
+								currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(), 200
+								); 
+						SpinnerModel botrightY = new SpinnerNumberModel(
+								currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								);
+			        	
+						spinnerTopLeftX = new JSpinner(topleftX);
+						spinnnerTopLeftY = new JSpinner(topleftY);
+						panTopLeft.removeAll();
+						panTopLeft.add(spinnerTopLeftX);
+						panTopLeft.add(spinnnerTopLeftY);
+						panTopLeft.repaint();
 			            	
-			            	
-			            	spinnerTopLeftX = new JSpinner(topleftX);
-			            	spinnnerTopLeftY = new JSpinner(topleftY);
-			            	panTopLeft.removeAll();
-			            	panTopLeft.add(spinnerTopLeftX);
-			            	panTopLeft.add(spinnnerTopLeftY);
-			            	panTopLeft.repaint();
-			            	
-			            	spinnerBotRightX = new JSpinner(botrightX);
-			            	spinnerBotRightY = new JSpinner(botrightY);
-			            	panBotRight.removeAll();
-			            	panBotRight.add(spinnerBotRightX);
-			            	panBotRight.add(spinnerBotRightY);
-			            	panBotRight.repaint();
-			            	
-			            	Thread.sleep(10);
-			            }
-			            catch (Exception e){
-			                System.out.println(e);
-			           	}     
-				    }
+						spinnerBotRightX = new JSpinner(botrightX);
+						spinnerBotRightY = new JSpinner(botrightY);
+						panBotRight.removeAll();
+						panBotRight.add(spinnerBotRightX);
+						panBotRight.add(spinnerBotRightY);
+						panBotRight.repaint();
+						
+						Thread.sleep(10);
+					} catch (Exception e){
+			          
+						haveData = false;
+						System.out.println(e);
+					}     
+				}
 			};
 		});
 		panel.add(btnNewData);
