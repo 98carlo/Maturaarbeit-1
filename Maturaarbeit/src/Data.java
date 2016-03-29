@@ -14,6 +14,16 @@ public class Data {
 	private double[] dataXYZ = null;
 	private double[] dataX = null;
 	private double[] dataY = null;
+	private double[] area = null;
+	
+	private int[] indices;
+	
+	private int triangulationMode = 0;
+	
+	private double width;
+	private double height;
+	private double step;
+	
 	
 	private String Name = null;
 	private String Path = null;
@@ -120,5 +130,92 @@ public class Data {
 
 	public double getMinY() {
 		return dataY[0];
+	}
+
+	
+	
+	public void newArea(double topleftX, double topleftY, double botrightX, double botrightY) {
+		
+		List<Double> areaList = new ArrayList<Double>();
+
+		width = botrightX - topleftX;
+		height = botrightY - topleftY;
+		
+		try{
+			for(int i = 0; i < dataXYZ.length; i+=3) {
+				if((dataXYZ[i] >= topleftX) && (dataXYZ[i] <= botrightX)){
+					
+					if((dataXYZ[i+1] >= topleftY) && (dataXYZ[i+1] <= botrightY)) {
+
+						areaList.add(dataXYZ[i]);
+						areaList.add(dataXYZ[i+1]);
+						areaList.add(dataXYZ[i+2]);
+					}
+				}
+			}
+						
+			this.area = new double[areaList.size()];
+		    
+			
+			for (int i = 0; i < area.length; i++) {
+		    	dataY[i] = areaList.get(i);
+		    }
+		    
+		    System.out.println("area finished");
+			
+		} 
+		catch(Exception e){
+		    System.err.println(e);
+		}	
+		
+	}
+
+	public void setupDraw() {
+		
+		double x = area[0];
+		double y = area[1];
+		double z = area[2];
+		List<Integer> indicesList = new ArrayList<Integer>(); 
+		
+		step = area[3] - x;
+
+		width /= step + 1;
+		height/= step + 1;
+				
+		for(int i = 0; i < area.length; i+=3){
+			area[i] = (area[i] - x) / step;
+			area[i+1] = (area[i+1] - y) / step;
+			area[i+2] = (area[i+2] - z) / step;
+		}
+		
+		// mode were the triangles are: ABD and BCD (square: topleft=A, then counterclockwise)
+		if(triangulationMode == 0){
+			for(y = 0; y < height; y++){
+				for(x = 0; x < width; x++){
+					int A = (int) (y*width + x);
+					int B = (int) ((y+1)*width + x);
+					int C = (int) ((y+1)*width + (x+1));
+					int D = (int) (y*width + (x+1));
+				
+					if((x+y)%2==0){
+						indicesList.add(A);
+						indicesList.add(C);
+						indicesList.add(D);
+					} else {
+						indicesList.add(B);
+						indicesList.add(C);
+						indicesList.add(D);
+					}
+				}
+			}
+			
+			indices = new int[indicesList.size()];
+			for(int i = 0; i < indices.length; i++){
+				indices[i] = indicesList.get(i);
+			}
+			
+		} // end if triangulationMode
+		
+		
 	}
 }
