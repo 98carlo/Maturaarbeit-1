@@ -30,7 +30,6 @@ public class Data {
 	
 	//empty constructor
 	public Data(){
-	
 	};
 	
 	//constructor
@@ -103,34 +102,6 @@ public class Data {
 		}
 	
 	} // end of constructor
-
-	public String getName() {
-		return this.Name;
-	}
-
-	public double randomX() {
-		return dataX[(int)Math.floor(Math.random()* dataX.length)];
-	}
-	
-	public Number randomY() {
-		return dataY[(int)Math.floor(Math.random()*dataY.length)];
-	}
-
-	public double getMaxX() {
-		return dataX[dataX.length-1];
-	}
-	
-	public double getMaxY() {
-		return dataY[dataY.length-1];
-	}
-	
-	public double getMinX() {
-		return dataX[0];
-	}
-
-	public double getMinY() {
-		return dataY[0];
-	}
 
 	
 	
@@ -213,9 +184,46 @@ public class Data {
 			for(int i = 0; i < indices.length; i++){
 				indices[i] = indicesList.get(i);
 			}
-			
 		} // end if triangulationMode
-		
-		
+	} // end of setupDraw
+
+	
+	//getter and setter:
+	
+	public String getName() {
+		return this.Name;
 	}
+
+	public double randomX() {
+		return dataX[(int)Math.floor(Math.random()* dataX.length)];
+	}
+	
+	public Number randomY() {
+		return dataY[(int)Math.floor(Math.random()*dataY.length)];
+	}
+
+	public double getMaxX() {
+		return dataX[dataX.length-1];
+	}
+	
+	public double getMaxY() {
+		return dataY[dataY.length-1];
+	}
+	
+	public double getMinX() {
+		return dataX[0];
+	}
+
+	public double getMinY() {
+		return dataY[0];
+	}
+	
+	public double[] getVertices(){
+		return area;
+	}
+	
+	public int[] getIndices(){
+		return indices;
+	}
+
 }
