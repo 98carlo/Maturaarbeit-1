@@ -55,7 +55,7 @@ public class Main extends JFrame
 	private JPanel panBotRight = new JPanel();
 
 	private JSpinner spinnerTopLeftX;
-	private JSpinner spinnnerTopLeftY;
+	private JSpinner spinnerTopLeftY;
 	private JSpinner spinnerBotRightX;
 	private JSpinner spinnerBotRightY;
 	
@@ -84,10 +84,16 @@ public class Main extends JFrame
 			public void actionPerformed(ActionEvent arg0) {		// action performed when you hit draw:
 	
 				if(haveData){
-					spinnerTopLeftX.getValue();
-					spinnnerTopLeftY.getValue();
-					spinnerBotRightX.getValue();
-					spinnerBotRightY.getValue();
+					
+					double topleftX = Math.min((double)spinnerTopLeftX.getValue(), (double) spinnerBotRightX.getValue());
+					double topleftY = Math.min((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
+					double botrightX = Math.max((double)spinnerTopLeftX.getValue(), (double) spinnerBotRightX.getValue());
+					double botrightY = Math.max((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
+					
+					currentdata.newArea(topleftX, topleftY, botrightX, botrightY);
+					
+					currentdata.setupDraw();
+					
 				}
 				
 				cl.show(panContainer, "2");
@@ -121,7 +127,7 @@ public class Main extends JFrame
 						currentdata = new Data(fetcheddata);
 						haveData = true;
 						
-						//creates the spinner and which the current data ist
+						//creates the spinner and which the current data is
 						lblCurrentData.setText("current Data: " + currentdata.getName());
 			           
 						SpinnerModel topleftX = new SpinnerNumberModel(
@@ -139,10 +145,10 @@ public class Main extends JFrame
 								);
 			        	
 						spinnerTopLeftX = new JSpinner(topleftX);
-						spinnnerTopLeftY = new JSpinner(topleftY);
+						spinnerTopLeftY = new JSpinner(topleftY);
 						panTopLeft.removeAll();
 						panTopLeft.add(spinnerTopLeftX);
-						panTopLeft.add(spinnnerTopLeftY);
+						panTopLeft.add(spinnerTopLeftY);
 						panTopLeft.repaint();
 			            	
 						spinnerBotRightX = new JSpinner(botrightX);
@@ -182,7 +188,6 @@ public class Main extends JFrame
 		JLabel lblnoDataBotRight = new JLabel("no data");
 		panBotRight.add(lblnoDataBotRight);
 		panel.add(panBotRight);
-		
 		
 		// drawWindow
 		caps = new GLCapabilities(GLProfile.getDefault());
