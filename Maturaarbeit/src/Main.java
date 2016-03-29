@@ -236,6 +236,7 @@ public class Main extends JFrame
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		
 		setupPointers(gl);
+		System.out.println("OpenGL init");
 	} // end of init
  
 	@Override
@@ -261,7 +262,7 @@ public class Main extends JFrame
 		}
 		
 		
-		int indices[] = new int[] { 0, 2, 1,   1, 3, 2,   3, 4, 2,   0, 4, 2 };
+		int indices[] = currentdata.getIndices();
 		IntBuffer indicesBuf = Buffers.newDirectIntBuffer(indices.length);
 			
 		for (int i = 0; i < indices.length; i++)
@@ -291,14 +292,15 @@ public class Main extends JFrame
  
 	private void setupPointers(GL2 gl)
 	{
-		double vertices[] = new double[]	
-				{  		3, -1, 3,   	-3, 0, 3,   	0, 1.5, 0, 
-						-3, 2.5, -3, 	 3, 1.5, -3,
-				};
-		double colors[] = new double[]
-				{  		1, 0, 0, 	1, 2, 0, 	0, 1, 0, 
-						1, 0, 0, 	1, 0, 0, 	
-				};
+		
+		double vertices[] = currentdata.getVertices();
+			
+		double colors[] = new double[vertices.length];
+		for(int i = 0; i<vertices.length; i+=3){
+			colors[i] = 1;
+			colors[i+1] = 0;
+			colors[i+2] = 0;
+		}
 		
 		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
 		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);
