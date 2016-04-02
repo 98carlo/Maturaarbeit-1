@@ -320,8 +320,8 @@ public class Main extends JFrame
 		gl.glEnableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
 		gl.glEnableClientState(GLPointerFunc.GL_COLOR_ARRAY);
 		
-		gl.glVertexPointer(3, GL.GL_FLOAT, 0, tmpVerticesBuf);
-		gl.glColorPointer(3, GL.GL_FLOAT, 0, tmpColorsBuf);
+		gl.glVertexPointer(3, GL2GL3.GL_DOUBLE, 0, tmpVerticesBuf);
+		gl.glColorPointer(3, GL2GL3.GL_DOUBLE, 0, tmpColorsBuf);
 		
 	} // end of setupPointers	
 }

@@ -152,7 +152,9 @@ public class Data {
 
 		width /= step + 1;
 		height/= step + 1;
-				
+		
+		try{
+		
 		for(int i = 0; i < area.length; i+=3){
 			area[i] = (area[i] - x) / step;
 			area[i+1] = (area[i+1] - y) / step;
@@ -185,6 +187,10 @@ public class Data {
 				indices[i] = indicesList.get(i);
 			}
 		} // end if triangulationMode
+		
+		} catch(Exception e){
+			System.err.println(e);
+		}
 	} // end of setupDraw
 
 	
