@@ -86,9 +86,9 @@ public class Main extends JFrame
 				if(haveData){
 					
 					double topleftX = Math.min((double)spinnerTopLeftX.getValue(), (double) spinnerBotRightX.getValue());
-					double topleftY = Math.min((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
+					double topleftY = Math.max((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
 					double botrightX = Math.max((double)spinnerTopLeftX.getValue(), (double) spinnerBotRightX.getValue());
-					double botrightY = Math.max((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
+					double botrightY = Math.min((double)spinnerTopLeftY.getValue(), (double) spinnerBotRightY.getValue());
 					
 					currentdata.newArea(topleftX, topleftY, botrightX, botrightY);
 					

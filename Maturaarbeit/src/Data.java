@@ -110,13 +110,13 @@ public class Data {
 		List<Double> areaList = new ArrayList<Double>();
 
 		width = botrightX - topleftX;
-		height = botrightY - topleftY;
+		height = topleftY - botrightY;
 		
 		try{
 			for(int i = 0; i < dataXYZ.length; i+=3) {
 				if((dataXYZ[i] >= topleftX) && (dataXYZ[i] <= botrightX)){
 					
-					if((dataXYZ[i+1] >= topleftY) && (dataXYZ[i+1] <= botrightY)) {
+					if((dataXYZ[i+1] <= topleftY) && (dataXYZ[i+1] >= botrightY)) {
 
 						areaList.add(dataXYZ[i]);
 						areaList.add(dataXYZ[i+1]);
@@ -129,7 +129,7 @@ public class Data {
 		    
 			
 			for (int i = 0; i < area.length; i++) {
-		    	dataY[i] = areaList.get(i);
+		    	area[i] = areaList.get(i);
 		    }
 		    
 		    System.out.println("area finished");
