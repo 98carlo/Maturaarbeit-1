@@ -109,8 +109,8 @@ public class Data {
 		
 		List<Double> areaList = new ArrayList<Double>();
 
-		width = botrightX - topleftX;
-		height = topleftY - botrightY;
+		width = Math.abs(botrightX - topleftX);
+		height = Math.abs(topleftY - botrightY);
 		
 		try{
 			for(int i = 0; i < dataXYZ.length; i+=3) {
@@ -119,8 +119,8 @@ public class Data {
 					if((dataXYZ[i+1] <= topleftY) && (dataXYZ[i+1] >= botrightY)) {
 
 						areaList.add(dataXYZ[i]);
+						areaList.add(dataXYZ[i+2]);		//y and z are switched in OpenGL
 						areaList.add(dataXYZ[i+1]);
-						areaList.add(dataXYZ[i+2]);
 					}
 				}
 			}
@@ -131,9 +131,7 @@ public class Data {
 			for (int i = 0; i < area.length; i++) {
 		    	area[i] = areaList.get(i);
 		    }
-		    
-		    System.out.println("area finished");
-			
+		    	
 		} 
 		catch(Exception e){
 		    System.err.println(e);
@@ -161,7 +159,7 @@ public class Data {
 			area[i+2] = (area[i+2] - z) / step;
 		}
 		
-		// mode were the triangles are: ABD and BCD (square: topleft=A, then counterclockwise)
+		// mode were the triangles are: square split form topleft to botomright (A topleft counterclockwise; tri: ABC & ACD)
 		if(triangulationMode == 0){
 			for(y = 0; y < height; y++){
 				for(x = 0; x < width; x++){
@@ -170,17 +168,16 @@ public class Data {
 					int C = (int) ((y+1)*width + (x+1));
 					int D = (int) (y*width + (x+1));
 				
-					if((x+y)%2==0){
-						indicesList.add(A);
-						indicesList.add(C);
-						indicesList.add(D);
-					} else {
-						indicesList.add(B);
-						indicesList.add(C);
-						indicesList.add(D);
-					}
+					indicesList.add(A);
+					indicesList.add(B);
+					indicesList.add(C);
+						
+					indicesList.add(A);
+					indicesList.add(C);
+					indicesList.add(D);
 				}
 			}
+		
 			
 			indices = new int[indicesList.size()];
 			for(int i = 0; i < indices.length; i++){
@@ -204,7 +201,7 @@ public class Data {
 		return dataX[(int)Math.floor(Math.random()* dataX.length)];
 	}
 	
-	public Number randomY() {
+	public double randomY() {
 		return dataY[(int)Math.floor(Math.random()*dataY.length)];
 	}
 
