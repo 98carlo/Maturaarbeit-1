@@ -129,19 +129,30 @@ public class Main extends JFrame
 						
 						//creates the spinner and which the current data is
 						lblCurrentData.setText("current Data: " + currentdata.getName());
-			           
+						
+						System.out.println(currentdata.getMaxX());
+						System.out.println(currentdata.getMaxY());
+
+						System.out.println(currentdata.getMinX());
+						System.out.println(currentdata.getMinY());
+						
+						
 						SpinnerModel topleftX = new SpinnerNumberModel(
-								currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
+								//currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
+								694000, currentdata.getMinX(), currentdata.getMaxX(),200
 								); 
 						SpinnerModel topleftY = new SpinnerNumberModel(
-								currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								//currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								232200, currentdata.getMinY(), currentdata.getMaxY(),200
 								);
 			            	
 						SpinnerModel botrightX = new SpinnerNumberModel(
-								currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(), 200
+								//currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(), 200
+								705200, currentdata.getMinX(), currentdata.getMaxX(),200
 								); 
 						SpinnerModel botrightY = new SpinnerNumberModel(
-								currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								//currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
+								215800, currentdata.getMinY(), currentdata.getMaxY(),200
 								);
 			        	
 						spinnerTopLeftX = new JSpinner(topleftX);
@@ -297,10 +308,13 @@ public class Main extends JFrame
 			
 		double colors[] = new double[vertices.length];
 		for(int i = 0; i<vertices.length; i+=3){
-			colors[i] = 1;
-			colors[i+1] = 0;
+			colors[i] = 0;
+			colors[i+1] = 1;
 			colors[i+2] = 0;
 		}
+		
+		colors[0] = 1;		colors[3] = 1;		colors[6] = 1;
+		colors[1] = 0;		colors[4] = 1;		colors[7] = 0;
 		
 		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
 		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);

@@ -146,7 +146,7 @@ public class Data {
 		double z = area[2];
 		List<Integer> indicesList = new ArrayList<Integer>(); 
 		
-		step = area[3] - x;
+		step = Math.abs(area[3] - x);
 
 		width /= step + 1;
 		height/= step + 1;
@@ -163,7 +163,7 @@ public class Data {
 		if(triangulationMode == 0){
 			for(y = 0; y < height; y++){
 				for(x = 0; x < width; x++){
-					int A = (int) (y*width + x);
+					int A = (int) (y*width + x); 
 					int B = (int) ((y+1)*width + x);
 					int C = (int) ((y+1)*width + (x+1));
 					int D = (int) (y*width + (x+1));
