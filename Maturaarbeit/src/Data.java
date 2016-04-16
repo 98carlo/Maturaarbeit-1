@@ -148,8 +148,8 @@ public class Data {
 		
 		step = Math.abs(area[3] - x);
 
-		width /= step + 1;
-		height/= step + 1;
+		width /= step;	width += 1;
+		height/= step;	height += 1;
 		
 		try{
 		
