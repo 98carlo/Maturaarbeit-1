@@ -130,13 +130,6 @@ public class Main extends JFrame
 						//creates the spinner and which the current data is
 						lblCurrentData.setText("current Data: " + currentdata.getName());
 						
-						System.out.println(currentdata.getMaxX());
-						System.out.println(currentdata.getMaxY());
-
-						System.out.println(currentdata.getMinX());
-						System.out.println(currentdata.getMinY());
-						
-						
 						SpinnerModel topleftX = new SpinnerNumberModel(
 								//currentdata.randomX(), currentdata.getMinX(), currentdata.getMaxX(),200
 								694000, currentdata.getMinX(), currentdata.getMaxX(),200
@@ -215,7 +208,7 @@ public class Main extends JFrame
 		cl.show(panContainer, "1");
 		
 		this.add(panContainer);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		this.setSize(640, 480);
 		this.setLocationRelativeTo(null);
@@ -247,7 +240,6 @@ public class Main extends JFrame
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		
 		setupPointers(gl);
-		System.out.println("OpenGL init");
 	} // end of init
  
 	@Override
@@ -313,8 +305,6 @@ public class Main extends JFrame
 			colors[i+2] = 0;
 		}
 		
-		colors[0] = 1;		colors[3] = 1;		colors[6] = 1;
-		colors[1] = 0;		colors[4] = 1;		colors[7] = 0;
 		
 		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
 		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);
