@@ -153,28 +153,54 @@ public class Data {
 		
 		try{
 		
-		for(int i = 0; i < area.length; i+=3){
-			area[i] = (area[i] - x) / step;
-			area[i+1] = (area[i+1] - y) / step;
-			area[i+2] = (area[i+2] - z) / step;
-		}
+			for(int i = 0; i < area.length; i+=3){
+				area[i] = (area[i] - x) / step;
+				area[i+1] = (area[i+1] - y) / step;
+				area[i+2] = (area[i+2] - z) / step;
+			}
 		
-		// mode were the triangles are: square split form topleft to botomright (A topleft counterclockwise; tri: ABC & ACD)
-		if(triangulationMode == 0){
-			for(y = 0; y < height; y++){
-				for(x = 0; x < width; x++){
+		
+			for(y = 0; y < (height-1); y++){
+				for(x = 0; x < (width-1); x++){
 					int A = (int) (y*width + x); 
 					int B = (int) ((y+1)*width + x);
 					int C = (int) ((y+1)*width + (x+1));
 					int D = (int) (y*width + (x+1));
 				
-					indicesList.add(A);
-					indicesList.add(B);
-					indicesList.add(C);
+					
+					// for the different triangulation methods..
+					// the square is bottom left = A, top left = B, top right = C, bottom right = D
+					
+					
+					switch(triangulationMode){
+					
+					case 0: 	// mode 0 makes the triangles: ABC & ACD (square split form bot left to top right...) 
+						indicesList.add(A);
+						indicesList.add(B);
+						indicesList.add(C);
 						
-					indicesList.add(A);
-					indicesList.add(C);
-					indicesList.add(D);
+						indicesList.add(A);
+						indicesList.add(C);
+						indicesList.add(D);
+						break;
+						
+					case 1:		// mode 0 makes the triangles: ABD & BCD (square split form top left to bot right...) 
+						
+						indicesList.add(A);
+						indicesList.add(B);
+						indicesList.add(D);
+						
+						indicesList.add(B);
+						indicesList.add(C);
+						indicesList.add(D);
+						
+						break;
+					
+					default:
+						System.out.println("NO TRIANGULATION MODE");
+						break;
+					}
+					
 				}
 			}
 		
@@ -183,7 +209,6 @@ public class Data {
 			for(int i = 0; i < indices.length; i++){
 				indices[i] = indicesList.get(i);
 			}
-		} // end if triangulationMode
 		
 		} catch(Exception e){
 			System.err.println(e);
