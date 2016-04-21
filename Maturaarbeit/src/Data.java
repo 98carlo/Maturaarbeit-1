@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Data {
 
@@ -51,13 +53,27 @@ public class Data {
 		    
 		    dataString = dataList.toString();
 		   
+
+		    // filtering the extra characters and setting up for splitting with pattern and matcher
+		    Pattern extraCharacters = Pattern.compile("([\\,\\]\\[])");
+		    Matcher matcherExtra = extraCharacters.matcher(dataString);
+		    dataString = matcherExtra.replaceAll("");
+		    
+		    
+		    Pattern comma = Pattern.compile("\\s+");
+		    Matcher matcherComma = comma.matcher(dataString);
+		    dataString = matcherComma.replaceAll(",");
+			   
+		    
+		    /* same thing just with only replaceAll
 		    dataString = dataString.replaceAll(",", "");
 		    dataString = dataString.replaceAll("\\s", ",");
 		    dataString = dataString.replaceAll("\\[", "");
-		    dataString = dataString.replaceAll("\\]", "");
-		    
+		    dataString = dataString.replaceAll("\\]", "");		    
+		    */
 		    
 		    String[] dataStringArray = dataString.split(",");
+
 		    
 		    dataXYZ = new double[dataStringArray.length];
 		    
