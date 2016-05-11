@@ -5,8 +5,7 @@ import java.awt.event.KeyListener;
 public class KeyAdapter implements KeyListener {
 
 	public KeyAdapter() {
-		// TODO Auto-generated constructor stub
-		System.out.println("KEY Adapter");
+
 	}
 
 	@Override
@@ -41,7 +40,7 @@ public class KeyAdapter implements KeyListener {
 			};
 			break;
 		case KeyEvent.VK_ESCAPE:
-			Main.cl.show(Main.panContainer, "1");
+			Main.cl.next(Main.panContainer);
 			break;
 			
 		default:

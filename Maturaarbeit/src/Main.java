@@ -145,7 +145,7 @@ public class Main extends JFrame
 								); 
 						SpinnerModel botrightY = new SpinnerNumberModel(
 								//currentdata.randomY(), currentdata.getMinY(), currentdata.getMaxY(), 200
-								215800, currentdata.getMinY(), currentdata.getMaxY(),200
+									215800, currentdata.getMinY(), currentdata.getMaxY(),200
 								);
 			        	
 						spinnerTopLeftX = new JSpinner(topleftX);
@@ -161,6 +161,8 @@ public class Main extends JFrame
 						panBotRight.add(spinnerBotRightX);
 						panBotRight.add(spinnerBotRightY);
 						panBotRight.repaint();
+						
+						System.out.println("Datafetcher finished");
 						
 						Thread.sleep(10);
 					} catch (Exception e){
@@ -258,6 +260,8 @@ public class Main extends JFrame
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		
+		//gl.glRotated(180, 0, 1, 0);
+		
 		if(polygonMode){
 			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);			
 		} else {
@@ -304,7 +308,6 @@ public class Main extends JFrame
 			colors[i+1] = 1;
 			colors[i+2] = 0;
 		}
-		
 		
 		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
 		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);

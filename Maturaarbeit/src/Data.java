@@ -63,17 +63,8 @@ public class Data {
 		    Pattern comma = Pattern.compile("\\s+");
 		    Matcher matcherComma = comma.matcher(dataString);
 		    dataString = matcherComma.replaceAll(",");
-			   
-		    
-		    /* same thing just with only replaceAll
-		    dataString = dataString.replaceAll(",", "");
-		    dataString = dataString.replaceAll("\\s", ",");
-		    dataString = dataString.replaceAll("\\[", "");
-		    dataString = dataString.replaceAll("\\]", "");		    
-		    */
-		    
+			 
 		    String[] dataStringArray = dataString.split(",");
-
 		    
 		    dataXYZ = new double[dataStringArray.length];
 		    
@@ -187,7 +178,6 @@ public class Data {
 					// for the different triangulation methods..
 					// the square is bottom left = A, top left = B, top right = C, bottom right = D
 					
-					
 					switch(triangulationMode){
 					
 					case 0: 	// mode 0 makes the triangles: ABC & ACD (square split form bot left to top right...) 
@@ -200,7 +190,7 @@ public class Data {
 						indicesList.add(D);
 						break;
 						
-					case 1:		// mode 0 makes the triangles: ABD & BCD (square split form top left to bot right...) 
+					case 1:		// mode 1 makes the triangles: ABD & BCD (square split form top left to bot right...) 
 						
 						indicesList.add(A);
 						indicesList.add(B);
@@ -269,5 +259,4 @@ public class Data {
 	public int[] getIndices(){
 		return indices;
 	}
-
 }
