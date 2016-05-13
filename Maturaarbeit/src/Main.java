@@ -26,6 +26,7 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.fixedfunc.GLPointerFunc;
 import com.jogamp.opengl.glu.GLU;
@@ -240,6 +241,17 @@ public class Main extends JFrame
 		
 		// enables depth_test (which vertex is behind the other...)
 		gl.glEnable(GL.GL_DEPTH_TEST);
+
+		gl.glEnable(GLLightingFunc.GL_LIGHTING);
+		gl.glEnable(GLLightingFunc.GL_LIGHT0);
+		
+		float[] lightPos = { 1f,1f,1f,0};        // light position
+		float[] noAmbient = { 0.2f, 0.2f, 0.2f, 1f };     // low ambient light
+		float[] diffuse = { 1f, 1f, 1f, 1f };        // full diffuse colour
+
+		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
+		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_DIFFUSE, diffuse, 0);
+		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
 		
 		try {
 			setupPointers(gl);
@@ -307,9 +319,6 @@ public class Main extends JFrame
 		
 		double vertices[] = currentdata.getVertices();
 		double normals[] = currentdata.getNormals();
-		
-		System.out.println("Vertices lenght : " + vertices.length);
-		System.out.println("Normals lenght : " + normals.length);
 		
 		double colors[] = new double[vertices.length];
 		for(int i = 0; i<vertices.length; i+=3){
