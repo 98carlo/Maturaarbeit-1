@@ -198,7 +198,7 @@ public class Main extends JFrame
 		// drawWindow
 		caps = new GLCapabilities(GLProfile.getDefault());
 		canvas = new GLCanvas(caps);
-		camera = new camera(0,-2,-10);
+		camera = new camera(0,-2,-5);
 		canvas.addGLEventListener(this);
 		canvas.addKeyListener(new KeyAdapter());
 		canvas.addMouseListener(new MouseAdapter());
@@ -241,7 +241,12 @@ public class Main extends JFrame
 		// enables depth_test (which vertex is behind the other...)
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		
-		setupPointers(gl);
+		try {
+			setupPointers(gl);
+		} catch (Exception e) {
+			System.out.println("setupPointersError");
+			e.printStackTrace();
+		}
 	} // end of init
  
 	@Override
@@ -297,11 +302,15 @@ public class Main extends JFrame
   
 //------------------ Pointers Part  ------------------ //
  
-	private void setupPointers(GL2 gl)
+	private void setupPointers(GL2 gl) throws Exception
 	{
 		
 		double vertices[] = currentdata.getVertices();
-			
+		double normals[] = currentdata.getNormals();
+		
+		System.out.println("Vertices lenght : " + vertices.length);
+		System.out.println("Normals lenght : " + normals.length);
+		
 		double colors[] = new double[vertices.length];
 		for(int i = 0; i<vertices.length; i+=3){
 			colors[i] = 0;
@@ -310,10 +319,15 @@ public class Main extends JFrame
 		}
 		
 		DoubleBuffer tmpVerticesBuf = Buffers.newDirectDoubleBuffer(vertices.length);
+		DoubleBuffer tmpNormalsBuf = Buffers.newDirectDoubleBuffer(normals.length);
 		DoubleBuffer tmpColorsBuf = Buffers.newDirectDoubleBuffer(colors.length);
 		
 		for (int i = 0; i < vertices.length; i++) {
 			tmpVerticesBuf.put(vertices[i]);
+		}
+		
+		for (int i = 0; i < normals.length; i++) {
+			tmpNormalsBuf.put(normals[i]);
 		}
 		
 		for (int j = 0; j < colors.length; j++) {
@@ -321,13 +335,16 @@ public class Main extends JFrame
 		}
 			
 		tmpVerticesBuf.rewind();
+		tmpNormalsBuf.rewind();
 		tmpColorsBuf.rewind();
 		
 		
 		gl.glEnableClientState(GLPointerFunc.GL_VERTEX_ARRAY);
+		gl.glEnableClientState(GLPointerFunc.GL_NORMAL_ARRAY);
 		gl.glEnableClientState(GLPointerFunc.GL_COLOR_ARRAY);
 		
 		gl.glVertexPointer(3, GL2GL3.GL_DOUBLE, 0, tmpVerticesBuf);
+		gl.glNormalPointer(GL2GL3.GL_DOUBLE, 0, tmpNormalsBuf);
 		gl.glColorPointer(3, GL2GL3.GL_DOUBLE, 0, tmpColorsBuf);
 		
 	} // end of setupPointers	

@@ -19,6 +19,7 @@ public class Data {
 	private double[] area = null;
 	
 	private int[] indices;
+	private double[] normals;
 	
 	private int triangulationMode = 0;
 	
@@ -178,16 +179,16 @@ public class Data {
 					// for the different triangulation methods..
 					// the square is bottom left = A, top left = B, top right = C, bottom right = D
 					
-					switch(triangulationMode){
+					switch(triangulationMode){ // standard == 0
 					
 					case 0: 	// mode 0 makes the triangles: ABC & ACD (square split form bot left to top right...) 
 						indicesList.add(A);
 						indicesList.add(B);
 						indicesList.add(C);
-						
+							
 						indicesList.add(A);
 						indicesList.add(C);
-						indicesList.add(D);
+						indicesList.add(D);						
 						break;
 						
 					case 1:		// mode 1 makes the triangles: ABD & BCD (square split form top left to bot right...) 
@@ -208,13 +209,16 @@ public class Data {
 					}
 					
 				}
-			}
+			} // end for()
 		
 			
 			indices = new int[indicesList.size()];
 			for(int i = 0; i < indices.length; i++){
 				indices[i] = indicesList.get(i);
 			}
+			
+			System.out.println("befor setupNormals");
+			setupNormals(width, height);
 		
 		} catch(Exception e){
 			System.err.println(e);
@@ -222,6 +226,249 @@ public class Data {
 	} // end of setupDraw
 
 	
+	private void setupNormals(double w, double h) {
+		
+		List<Double> NormalsOrderedList = new ArrayList<Double>(); // A, B, C, ....  not ordered for draw...
+		
+		for(int y = 0; y < (height); y++){
+			for(int x = 0; x < (width); x++){
+				
+				int A = (int) (y*width + x);
+								
+				//Vector vecA = new Vector(area[3*A], area[3*A+1], area[3*A+2]);
+				
+				
+			if(y==0){
+				if(x==0){
+					//case 1+2, bottom, left corner Normalcalculation
+					System.out.println("bottom left corner");
+					
+					int B = (int) ((y+1)*width + x);
+					int C = (int) ((y+1)*width + (x+1));
+					int D = (int) (y*width + (x+1));
+			
+					
+					Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+					Vector vecAC = new Vector(area[3*C] - area[3*A], area[3*C+1] - area[3*A+1], area[3*C+2] - area[3*A+2]);
+					Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+					
+					Vector v1 = vecAB.crossProduct(vecAC);
+					Vector v2 = vecAC.crossProduct(vecAD);
+					
+					Vector Normal = v1.average(v2);
+					
+					NormalsOrderedList.add(Normal.x);
+					NormalsOrderedList.add(Normal.y);
+					NormalsOrderedList.add(Normal.z);
+					
+					
+				} else if(x==(w-1)){
+					//case 2+3, bottom, right corner Normalcalculation
+					System.out.println("bottom right corner");
+					
+					int B = (int) ((y+1)*width + x);
+					int Dminus = (int) (y*width + (x-1));
+			
+					
+					Vector vecAD = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+					Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+					
+					
+					Vector v1 = vecAD.crossProduct(vecAB);
+					
+					v1.normalize();
+					
+					NormalsOrderedList.add(v1.x);
+					NormalsOrderedList.add(v1.y);
+					NormalsOrderedList.add(v1.z);
+					
+				} else {
+					//case 2, bottom Normalcalculation
+					System.out.println("just bottom");
+					
+					int B = (int) ((y+1)*width + x);
+					int C = (int) ((y+1)*width + (x+1));
+					int D = (int) (y*width + (x+1));
+					int Dminus = (int) (y*width + (x-1));
+			
+					
+					Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+					Vector vecAC = new Vector(area[3*C] - area[3*A], area[3*C+1] - area[3*A+1], area[3*C+2] - area[3*A+2]);
+					Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+					Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+					
+					Vector v1 = vecAB.crossProduct(vecAC);
+					Vector v2 = vecAC.crossProduct(vecAD);
+					Vector v3 = vecADminus.crossProduct(vecAB);
+					
+					Vector Normal = v1.average(v2, v3);
+					
+					NormalsOrderedList.add(Normal.x);
+					NormalsOrderedList.add(Normal.y);
+					NormalsOrderedList.add(Normal.z);
+					
+				}
+			} else if(y==(h-1)){
+				if(x==0){
+					//case 1+4 top, left corner Normalcalculation
+					System.out.println("top left corner");
+					
+					int Bminus = (int) ((y-1)*width + x);
+					int D = (int) (y*width + (x+1));
+			
+					
+					Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+					Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+					
+					
+					Vector v1 = vecAD.crossProduct(vecABminus);
+					
+					v1.normalize();
+					
+					NormalsOrderedList.add(v1.x);
+					NormalsOrderedList.add(v1.y);
+					NormalsOrderedList.add(v1.z);
+					
+				} else if(x==(w-1)){
+					//case 3+4 top, right corner Normalcalculation
+					System.out.println("top right corner");
+					
+					int Bminus = (int) ((y-1)*width + x);
+					int Dminus = (int) (y*width + (x-1));
+					int Cminus = (int) ((y-1)*width + (x-1));
+					
+					Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+					Vector vecACminus = new Vector(area[3*Cminus] - area[3*A], area[3*Cminus+1] - area[3*A+1], area[3*Cminus+2] - area[3*A+2]);
+					Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+					
+					Vector v1 = vecABminus.crossProduct(vecACminus);
+					Vector v2 = vecACminus.crossProduct(vecADminus);
+					
+					Vector Normal = v1.average(v2);
+					
+					NormalsOrderedList.add(Normal.x);
+					NormalsOrderedList.add(Normal.y);
+					NormalsOrderedList.add(Normal.z);
+					
+				} else {
+					//case 4 top Normalcalculation
+					System.out.println("just top");
+					
+					int Bminus = (int) ((y-1)*width + x);
+					int D = (int) (y*width + (x+1));
+					int Dminus = (int) (y*width + (x-1));
+					int Cminus = (int) ((y-1)*width + (x-1));
+					
+					
+					Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+					Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+					Vector vecACminus = new Vector(area[3*Cminus] - area[3*A], area[3*Cminus+1] - area[3*A+1], area[3*Cminus+2] - area[3*A+2]);
+					Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+					
+					Vector v1 = vecAD.crossProduct(vecABminus);
+					Vector v2 = vecABminus.crossProduct(vecACminus);
+					Vector v3 = vecACminus.crossProduct(vecADminus);
+					
+					Vector Normal = v1.average(v2, v3);
+					
+					NormalsOrderedList.add(Normal.x);
+					NormalsOrderedList.add(Normal.y);
+					NormalsOrderedList.add(Normal.z);
+					
+				}
+			} else if(x==(w-1)){
+				//case 3 right Normalcalculation
+				System.out.println("just right");
+				
+				int B = (int) ((y+1)*width + x);
+				int Bminus = (int) ((y-1)*width + x);
+				int Dminus = (int) (y*width + (x-1));
+				int Cminus = (int) ((y-1)*width + (x-1));
+				
+				
+				Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+				Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+				Vector vecACminus = new Vector(area[3*Cminus] - area[3*A], area[3*Cminus+1] - area[3*A+1], area[3*Cminus+2] - area[3*A+2]);
+				Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+				
+				Vector v1 = vecABminus.crossProduct(vecACminus);
+				Vector v2 = vecACminus.crossProduct(vecADminus);
+				Vector v3 = vecADminus.crossProduct(vecAB);
+				
+				Vector Normal = v1.average(v2, v3);
+				
+				NormalsOrderedList.add(Normal.x);
+				NormalsOrderedList.add(Normal.y);
+				NormalsOrderedList.add(Normal.z);
+				
+			} else if(x==0){
+				//case 1 left Normalcalculation
+				System.out.println("just left");
+				
+				int B = (int) ((y+1)*width + x);
+				int C = (int) ((y+1)*width + (x+1));
+				int D = (int) (y*width + (x+1));
+				int Bminus = (int) ((y-1)*width + x);
+				
+				Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+				Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+				Vector vecAC = new Vector(area[3*C] - area[3*A], area[3*C+1] - area[3*A+1], area[3*C+2] - area[3*A+2]);
+				Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+				
+				Vector v1 = vecAB.crossProduct(vecAC);
+				Vector v2 = vecAC.crossProduct(vecAD);
+				Vector v3 = vecAD.crossProduct(vecABminus);
+				
+				Vector Normal = v1.average(v2, v3);
+				
+				NormalsOrderedList.add(Normal.x);
+				NormalsOrderedList.add(Normal.y);
+				NormalsOrderedList.add(Normal.z);
+				
+			} else {
+				//normal no special case
+				System.out.println("normal");
+				
+				int B = (int) ((y+1)*width + x);
+				int C = (int) ((y+1)*width + (x+1));
+				int D = (int) (y*width + (x+1));
+				int Bminus = (int) ((y-1)*width + x);
+				int Cminus = (int) ((y-1)*width + (x-1));
+				int Dminus = (int) (y*width + (x-1));
+								
+				Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+				Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+				Vector vecAC = new Vector(area[3*C] - area[3*A], area[3*C+1] - area[3*A+1], area[3*C+2] - area[3*A+2]);
+				Vector vecACminus = new Vector(area[3*Cminus] - area[3*A], area[3*Cminus+1] - area[3*A+1], area[3*Cminus+2] - area[3*A+2]);
+				Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+				Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
+				
+				Vector v1 = vecAB.crossProduct(vecAC);
+				Vector v2 = vecAC.crossProduct(vecAD);
+				Vector v3 = vecAD.crossProduct(vecABminus);
+				Vector v4 = vecABminus.crossProduct(vecACminus);
+				Vector v5 = vecACminus.crossProduct(vecADminus);
+				Vector v6 = vecADminus.crossProduct(vecAB);
+				
+				Vector Normal = v1.average(v2, v3, v4, v5, v6);
+				
+				NormalsOrderedList.add(Normal.x);
+				NormalsOrderedList.add(Normal.y);
+				NormalsOrderedList.add(Normal.z);
+			}
+				
+			}
+		} // end for()
+		
+		normals = new double[NormalsOrderedList.size()];
+		for(int i = 0; i < normals.length; i++){
+			normals[i] = NormalsOrderedList.get(i);
+		}
+	
+		System.out.println("setupNormals finished");
+		
+	}
+
 	//getter and setter:
 	
 	public String getName() {
@@ -258,5 +505,9 @@ public class Data {
 	
 	public int[] getIndices(){
 		return indices;
+	}
+	
+	public double[] getNormals(){
+		return normals;
 	}
 }

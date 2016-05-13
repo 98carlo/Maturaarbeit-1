@@ -6,22 +6,42 @@ public class Vector extends Position {
 	
 	public Vector(Position p) {
 		super(p);
-		length = getLength(this);
+		this.length = getLength(this);
 	}
 	
 	public Vector(double x, double y, double z) {
 		super(x, y, z);
-		length = getLength(this);
+		this.length = getLength(this);
 	}
-
+	
 	public double getLength(Vector v){
 		return(Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z));
+	}
+	
+	public Vector add(Vector v2) {
+		return new Vector(this.x + v2.x, this.y + v2.y, this.z + v2.z);
+	}
+	
+	public Vector average(Vector...vecs){
+		
+		int numberOfvecs = vecs.length;
+		Vector vectorAveraged = this;
+		
+		for(int i = 0; i < numberOfvecs; i++) {
+			vectorAveraged = vectorAveraged.add(vecs[i]);
+		}
+		
+		vectorAveraged.normalize();
+		
+		return vectorAveraged;
 	}
 	
 	public void normalize(){
 		this.x /= length;
 		this.y /= length;
 		this.z /= length;
+		
+		this.length = 1;
 	}
 	
 	public double angleTo(Vector v) {
@@ -31,7 +51,7 @@ public class Vector extends Position {
 	} // end of angleTo
 	
 	public Vector crossProduct(Vector v) {
-		return new Vector(this.y*v.z - this.z*v.y, this.z*v.x - this.x*v.z, this.x*v.y - this.y*v.x);
+		return new Vector(this.z*v.y - this.y*v.z, this.x*v.z - this.z*v.x, this.y*v.x - this.x*v.y);
 	}
 	
 	public Vector getNormal(Position p1, Position p2, Position p3){
@@ -39,5 +59,6 @@ public class Vector extends Position {
 		Vector b = new Vector(p3.x-p1.x, p3.y-p1.y, p3.z-p1.z);
 		return a.crossProduct(b);
 	}
+	
 	
 }
