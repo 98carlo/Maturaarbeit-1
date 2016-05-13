@@ -217,7 +217,6 @@ public class Data {
 				indices[i] = indicesList.get(i);
 			}
 			
-			System.out.println("befor setupNormals");
 			setupNormals(width, height);
 		
 		} catch(Exception e){
@@ -241,7 +240,6 @@ public class Data {
 			if(y==0){
 				if(x==0){
 					//case 1+2, bottom, left corner Normalcalculation
-					System.out.println("bottom left corner");
 					
 					int B = (int) ((y+1)*width + x);
 					int C = (int) ((y+1)*width + (x+1));
@@ -264,7 +262,6 @@ public class Data {
 					
 				} else if(x==(w-1)){
 					//case 2+3, bottom, right corner Normalcalculation
-					System.out.println("bottom right corner");
 					
 					int B = (int) ((y+1)*width + x);
 					int Dminus = (int) (y*width + (x-1));
@@ -284,7 +281,6 @@ public class Data {
 					
 				} else {
 					//case 2, bottom Normalcalculation
-					System.out.println("just bottom");
 					
 					int B = (int) ((y+1)*width + x);
 					int C = (int) ((y+1)*width + (x+1));
@@ -311,7 +307,6 @@ public class Data {
 			} else if(y==(h-1)){
 				if(x==0){
 					//case 1+4 top, left corner Normalcalculation
-					System.out.println("top left corner");
 					
 					int Bminus = (int) ((y-1)*width + x);
 					int D = (int) (y*width + (x+1));
@@ -331,7 +326,6 @@ public class Data {
 					
 				} else if(x==(w-1)){
 					//case 3+4 top, right corner Normalcalculation
-					System.out.println("top right corner");
 					
 					int Bminus = (int) ((y-1)*width + x);
 					int Dminus = (int) (y*width + (x-1));
@@ -352,7 +346,6 @@ public class Data {
 					
 				} else {
 					//case 4 top Normalcalculation
-					System.out.println("just top");
 					
 					int Bminus = (int) ((y-1)*width + x);
 					int D = (int) (y*width + (x+1));
@@ -378,7 +371,6 @@ public class Data {
 				}
 			} else if(x==(w-1)){
 				//case 3 right Normalcalculation
-				System.out.println("just right");
 				
 				int B = (int) ((y+1)*width + x);
 				int Bminus = (int) ((y-1)*width + x);
@@ -403,7 +395,6 @@ public class Data {
 				
 			} else if(x==0){
 				//case 1 left Normalcalculation
-				System.out.println("just left");
 				
 				int B = (int) ((y+1)*width + x);
 				int C = (int) ((y+1)*width + (x+1));
@@ -427,7 +418,6 @@ public class Data {
 				
 			} else {
 				//normal no special case
-				System.out.println("normal");
 				
 				int B = (int) ((y+1)*width + x);
 				int C = (int) ((y+1)*width + (x+1));
@@ -465,7 +455,6 @@ public class Data {
 			normals[i] = NormalsOrderedList.get(i);
 		}
 	
-		System.out.println("setupNormals finished");
 		
 	}
 
