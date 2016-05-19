@@ -79,6 +79,7 @@ public class Main extends JFrame
 		lblTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		panSettings.add(lblTitel, BorderLayout.NORTH);
 		
+		// the button which switches to the scene
 		btnDraw = new JButton("draw");
 		btnDraw.addActionListener(new ActionListener() {
 			@Override
@@ -103,6 +104,7 @@ public class Main extends JFrame
 			
 		panSettings.add(btnDraw, BorderLayout.SOUTH);
 		
+		// label which displays the name of the current data
 		JPanel panel = new JPanel();
 		panSettings.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(4, 2));
@@ -110,6 +112,8 @@ public class Main extends JFrame
 		JLabel lblCurrentData = new JLabel("current Data: no Data");
 		panel.add(lblCurrentData);
 		
+		
+		// button for fetching data
 		btnNewData = new JButton("new Data");
 		btnNewData.addActionListener(new ActionListener() {
 			@Override
@@ -242,13 +246,16 @@ public class Main extends JFrame
 		// enables depth_test (which vertex is behind the other...)
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
+		// enables OpenGL - Lighting		has to be removed
 		gl.glEnable(GLLightingFunc.GL_LIGHTING);
 		gl.glEnable(GLLightingFunc.GL_LIGHT0);
 		
+		// sets the light properties
 		float[] lightPos = { 1f,1f,1f,0};        // light position
 		float[] noAmbient = { 0.2f, 0.2f, 0.2f, 1f };     // low ambient light
 		float[] diffuse = { 1f, 1f, 1f, 1f };        // full diffuse colour
 
+		// activates the lighting
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_DIFFUSE, diffuse, 0);
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
@@ -265,6 +272,7 @@ public class Main extends JFrame
 	public void display(GLAutoDrawable drawable)
 	{
 		GL2 gl = drawable.getGL().getGL2();
+		// clears the color and depth test buffers
 		gl.glClear( GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		
 		//camera
@@ -275,17 +283,16 @@ public class Main extends JFrame
         
         //Modeling
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-		gl.glLoadIdentity();
+		gl.glLoadIdentity();	
 		
-		//gl.glRotated(180, 0, 1, 0);
-		
+		// sets the rendering on wire or fill according to the space input
 		if(polygonMode){
 			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_LINE);			
 		} else {
 			gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2GL3.GL_FILL);
 		}
 		
-		
+		// gets the indices and loops over them
 		int indices[] = currentdata.getIndices();
 		IntBuffer indicesBuf = Buffers.newDirectIntBuffer(indices.length);
 			
