@@ -12,11 +12,11 @@ public class KeyAdapter implements KeyListener {
 	public void keyPressed(KeyEvent key)
 	{
 		switch (key.getKeyCode())  
-		{
+		{/*
 		case KeyEvent.VK_W:
 			Main.camera.translate(0, 0, .1);
 			break;
-		case KeyEvent.VK_S:
+		case KeyEvent.VK_S: 
 			Main.camera.translate(0, 0, -.1);
 			break;
 		case KeyEvent.VK_A:
@@ -30,7 +30,7 @@ public class KeyAdapter implements KeyListener {
 			break;
 		case KeyEvent.VK_SPACE:
 			Main.camera.translate(0, -.1, 0);
-			break;
+			break;*/
 		case KeyEvent.VK_G:
 			//System.out.println(Main.camera.x + " " + Main.camera.y + " " + Main.camera.z);
 			if (Main.polygonMode){

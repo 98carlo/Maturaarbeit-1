@@ -203,7 +203,7 @@ public class Main extends JFrame
 		// drawWindow
 		caps = new GLCapabilities(GLProfile.getDefault());
 		canvas = new GLCanvas(caps);
-		camera = new camera(0,-2,-5);
+		camera = new camera(0,2,5);
 		canvas.addGLEventListener(this);
 		canvas.addKeyListener(new KeyAdapter());
 		canvas.addMouseListener(new MouseAdapter());
@@ -280,12 +280,12 @@ public class Main extends JFrame
 		//camera
 		gl.glMatrixMode( GLMatrixFunc.GL_PROJECTION );
         gl.glLoadIdentity();
-		glu.gluPerspective(camera.fovy, camera.aspect, camera.near, camera.far);
-        gl.glTranslated(camera.x, camera.y, camera.z);
-        
+        glu.gluPerspective(camera.fovy, camera.aspect, camera.near, camera.far);
+		
         //Modeling
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();	
+		glu.gluLookAt(camera.x, camera.y, camera.z, camera.forward.x, camera.forward.y, camera.forward.z, camera.up.x, camera.up.y, camera.up.z);
 		
 		// sets the rendering on wire or fill according to the space input
 		if(polygonMode){
