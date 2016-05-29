@@ -11,27 +11,27 @@ public class KeyAdapter implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent key)
 	{
-		switch (key.getKeyChar()) 
+		switch (key.getKeyCode())  
 		{
-		case 'w':
+		case KeyEvent.VK_W:
 			Main.camera.translate(0, 0, .1);
 			break;
-		case 's':
+		case KeyEvent.VK_S:
 			Main.camera.translate(0, 0, -.1);
 			break;
-		case 'a':
+		case KeyEvent.VK_A:
 			Main.camera.translate(.1, 0, 0);
 			break;
-		case 'd':
+		case KeyEvent.VK_D:
 			Main.camera.translate(-.1, 0, 0);
 			break;
-		case 'e':
+		case KeyEvent.VK_C:
 			Main.camera.translate(0, .1, 0);
 			break;
-		case 'q':
+		case KeyEvent.VK_SPACE:
 			Main.camera.translate(0, -.1, 0);
 			break;
-		case KeyEvent.VK_SPACE:
+		case KeyEvent.VK_G:
 			//System.out.println(Main.camera.x + " " + Main.camera.y + " " + Main.camera.z);
 			if (Main.polygonMode){
 				Main.polygonMode = false;
