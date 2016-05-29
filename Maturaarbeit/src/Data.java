@@ -242,22 +242,46 @@ public class Data {
 		for(int y = 0; y < (height); y++){
 			for(int x = 0; x < (width); x++){
 				
-				int A = (y*width + x);							//System.out.println("A: " + A);
-				int B = Math.min(A, (y+1)*width + x);			//System.out.println("B: " + B);
-				int C = Math.min(A,(y+1)*width + (x+1));		//System.out.println("C: " + C);
-				int D = Math.min(A, y*width + (x+1));			//System.out.println("D: " + D);
-				int Bminus = Math.max(A, (y-1)*width + x);		//System.out.println("Bminus: " + Bminus);
-				int Cminus = Math.max(A, (y-1)*width + (x-1));	//System.out.println("Cminus: " + Cminus);
-				int Dminus = Math.max(A, y*width + (x-1));		//System.out.println("Dminus: " + Dminus);
+				int A = (y*width + x);							
+				int B = (y+1)*width + x;			
+				int C = (y+1)*width + (x+1);		
+				int D = y*width + (x+1);			
+				int Bminus = (y-1)*width + x;		
+				int Cminus = (y-1)*width + (x-1);	
+				int Dminus = y*width + (x-1);		
 				
-				//System.out.println("x: " + x + ", y: " + y);
-									
-				Vector vecAB = new Vector(0, 1, area[3*B+2] - area[3*A+2]);
-				Vector vecABminus = new Vector(0, -1, area[3*Bminus+2] - area[3*A+2]);
-				Vector vecAC = new Vector(1, 1, area[3*C+2] - area[3*A+2]);
-				Vector vecACminus = new Vector(-1, -1, area[3*Cminus+2] - area[3*A+2]);
-				Vector vecAD = new Vector(1, 0, area[3*D+2] - area[3*A+2]);
-				Vector vecADminus = new Vector(-1, 0, area[3*Dminus+2] - area[3*A+2]);
+				// left and bottom edge detection
+				if((x==0)&&(y==0)){
+					Bminus = A;
+					Cminus = A;
+					Dminus = A;
+				} else if(x==0) {
+					Cminus = Bminus;
+					Dminus = A;
+				} else if(y==0) {
+					Cminus = Dminus;
+					Bminus = A;
+				}
+				
+				// right and top edge detection
+				if((x==width-1)&&(y==height-1)){
+					B = A;
+					C = A;
+					D = A;
+				} else if(x==(width-1)){
+					C = B;
+					D = A;
+				} else if(y==(height-1)){
+					B = A;
+					C = D;
+				}
+				
+				Vector vecAB = new Vector(area[3*B] - area[3*A], area[3*B+1] - area[3*A+1], area[3*B+2] - area[3*A+2]);
+				Vector vecABminus = new Vector(area[3*Bminus] - area[3*A], area[3*Bminus+1] - area[3*A+1], area[3*Bminus+2] - area[3*A+2]);
+				Vector vecAC = new Vector(area[3*C] - area[3*A], area[3*C+1] - area[3*A+1], area[3*C+2] - area[3*A+2]);
+				Vector vecACminus = new Vector(area[3*Cminus] - area[3*A], area[3*Cminus+1] - area[3*A+1], area[3*Cminus+2] - area[3*A+2]);
+				Vector vecAD = new Vector(area[3*D] - area[3*A], area[3*D+1] - area[3*A+1], area[3*D+2] - area[3*A+2]);
+				Vector vecADminus = new Vector(area[3*Dminus] - area[3*A], area[3*Dminus+1] - area[3*A+1], area[3*Dminus+2] - area[3*A+2]);
 				
 				Vector v1 = vecAB.crossProduct(vecAC);
 				Vector v2 = vecAC.crossProduct(vecAD);
@@ -271,6 +295,7 @@ public class Data {
 				NormalsOrderedList.add(Normal.x);
 				NormalsOrderedList.add(Normal.y);
 				NormalsOrderedList.add(Normal.z);
+				
 			}
 		} // end for()
 		
