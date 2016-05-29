@@ -30,24 +30,22 @@ public class Vector extends Position {
 		for(int i = 0; i < numberOfvecs; i++) {
 			vectorAveraged = vectorAveraged.add(vecs[i]);
 		}
-		
-		vectorAveraged.normalize();
-		
+	
 		return vectorAveraged;
 	}
 	
-	public void normalize(){
-		this.x /= length;
-		this.y /= length;
-		this.z /= length;
+	public Vector normalize(){
+		x = this.x / this.length;
+		y = this.y / this.length;
+		z = this.z / this.length;
 		
-		this.length = 1;
+		return new Vector(x,y,z);
 	}
 	
 	public double angleTo(Vector v) {
 		double skal = this.x*v.x + this.y*v.y + this.z*v.z;
+		
 		return Math.acos(skal/(this.length * v.length));
-	
 	} // end of angleTo
 	
 	public Vector crossProduct(Vector v) {
