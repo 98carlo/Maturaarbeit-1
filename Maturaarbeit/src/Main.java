@@ -4,6 +4,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.Buffer;
 import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
@@ -246,6 +247,7 @@ public class Main extends JFrame
 		// enables depth_test (which vertex is behind the other...)
 		gl.glEnable(GL.GL_DEPTH_TEST);
 
+		/*
 		// enables OpenGL - Lighting		has to be removed
 		gl.glEnable(GLLightingFunc.GL_LIGHTING);
 		gl.glEnable(GLLightingFunc.GL_LIGHT0);
@@ -259,6 +261,7 @@ public class Main extends JFrame
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_AMBIENT, noAmbient, 0);
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_DIFFUSE, diffuse, 0);
 		gl.glLightfv(GLLightingFunc.GL_LIGHT0, GLLightingFunc.GL_POSITION,lightPos, 0);
+		*/
 		
 		try {
 			setupPointers(gl);
@@ -296,12 +299,17 @@ public class Main extends JFrame
 		int indices[] = currentdata.getIndices();
 		IntBuffer indicesBuf = Buffers.newDirectIntBuffer(indices.length);
 			
-		for (int i = 0; i < indices.length; i++)
+		for (int i = 0; i < indices.length; i++){
 			indicesBuf.put(indices[i]);
-			indicesBuf.rewind();
-			gl.glDrawElements(GL2.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, indicesBuf);
+		}
+		indicesBuf.rewind();
 		
+		//draws the points
+		gl.glDrawElements(GL2.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, indicesBuf);
+		
+		// forces execution of the draw..
 		gl.glFlush();
+		
 	}
 
 	@Override
